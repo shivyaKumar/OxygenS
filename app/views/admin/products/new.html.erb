@@ -1,0 +1,228 @@
+<%= form_with model: @product, local: true, html: { class: 'product-form', id: 'product-form' } do |form| %>
+  <style>
+    .product-preview {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 300px;
+      z-index: 1000;
+    }
+
+    .card {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.875em;
+    }
+
+    .is-invalid {
+      border-color: red;
+    }
+  </style>
+
+  <div class="container">
+    <h1 class="text-center mb-4"><%= @product.new_record? ? 'Add New Product' : 'Edit Product' %></h1>
+
+    <!-- Back to Products Button -->
+    <div class="mb-4">
+      <%= link_to 'Back to Products', admin_products_path, class: 'btn btn-secondary' %>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6 col-sm-12 mb-3">
+        <div class="form-group">
+          <%= form.label :name, class: 'form-label' %>
+          <%= form.text_field :name, class: 'form-control', id: 'product-name' %>
+        </div>
+      </div>
+      
+      <div class="col-md-6 col-sm-12 mb-3">
+        <div class="form-group" style="width:20%;">
+          <%= form.label :price, class: 'form-label' %>
+          <%= form.number_field :price, step: 1.0, class: 'form-control', id: 'product-price' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group mb-3" style="width:50%;">
+      <%= form.label :description, class: 'form-label' %>
+      <%= form.text_area :description, class: 'form-control', rows: 4, id: 'product-description' %>
+    </div>
+
+    <div class="form-group mb-3" style="width:30%;">
+      <%= form.label :image, "Upload Image", class: 'form-label' %>
+      <%= form.file_field :image, class: 'form-control', id: 'product-image' %>
+    </div>
+
+    <h3 class="mb-3">Variants</h3>
+    <div id="variants-container" class="mb-4">
+      <table class="table table-striped" id="variants-table">
+        <thead>
+          <tr>
+            <th>Color</th>
+            <th>Size</th>
+            <th>Quantity</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= form.fields_for :variants do |variant_form| %>
+            <tr class="variant-fields">
+              <td><%= variant_form.text_field :color, class: 'form-control', id: 'variant-color' %></td>
+              <td><%= variant_form.text_field :size, class: 'form-control', id: 'variant-size' %></td>
+              <td><%= variant_form.number_field :quantity, class: 'form-control', id: 'variant-quantity' %></td>
+              <td><%= link_to 'Remove', '#', class: 'remove-variant btn btn-danger btn-sm' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <button type="button" id="add-variant" class="btn btn-primary">Add Another Variant</button>
+
+    <% if @product.errors.any? %>
+      <div class="alert alert-danger mt-3">
+        <ul>
+          <% @product.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group text-center mt-3">
+      <%= form.submit @product.new_record? ? "Create Product" : "Update Product", class: 'btn btn-success', id: 'submit-button' %>
+    </div>
+  </div>
+
+  <!-- Dynamic Card Preview -->
+  <div class="product-preview">
+    <h3>Product Preview</h3>
+    <div class="card" style="width: 100%; max-width: 300px;">
+      <% if @product.image.attached? %>
+        <%= image_tag @product.image, alt: @product.name, class: 'card-img-top' %>
+      <% else %>
+        <%= image_tag 'default-image.png', alt: 'Default Image', class: 'card-img-top' %>
+      <% end %>
+      <div class="card-body">
+        <h5 class="card-title"><%= @product.name %></h5>
+        <p class="card-text"><%= @product.description %></p>
+        <p class="card-text">Price: <%= number_to_currency(@product.price) %></p>
+        <div class="variants">
+          <% @product.variants.each do |variant| %>
+            <div class="variant">
+              <p><strong>Color:</strong> <%= variant.color %></p>
+              <p><strong>Size:</strong> <%= variant.size %></p>
+              <p><strong>Quantity:</strong> <%= variant.quantity %></p>
+            </div>
+          <% end %>
+        </div>
+        <a href="#" class="btn btn-danger">Add to Cart</a>
+        <a href="#" class="btn btn-primary">View Product</a>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<!-- Template for New Variant Row -->
+<script type="text/template" id="variant-template">
+  <tr class="variant-fields">
+    <td><input type="text" name="product[variants_attributes][][color]" class="form-control" /></td>
+    <td><input type="text" name="product[variants_attributes][][size]" class="form-control" /></td>
+    <td><input type="number" name="product[variants_attributes][][quantity]" class="form-control" /></td>
+    <td><button type="button" class="remove-variant btn btn-danger btn-sm">Remove Variant</button></td>
+  </tr>
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('product-form');
+  const submitButton = document.getElementById('submit-button');
+
+  submitButton.addEventListener('click', (event) => {
+    let valid = true;
+
+    // Clear previous error messages
+    const errorMessages = form.querySelectorAll('.error-message');
+    errorMessages.forEach((msg) => msg.remove());
+
+    // Validate product fields
+    const name = document.getElementById('product-name').value.trim();
+    const price = document.getElementById('product-price').value.trim();
+    const description = document.getElementById('product-description').value.trim();
+    const image = document.getElementById('product-image').files.length;
+
+    if (!name) {
+      valid = false;
+      showError('product-name', 'Product name is required.');
+    }
+
+    if (!price || parseFloat(price) <= 0) {
+      valid = false;
+      showError('product-price', 'Product price must be greater than 0.');
+    }
+
+    if (!description) {
+      valid = false;
+      showError('product-description', 'Product description is required.');
+    }
+
+    if (image === 0) {
+      valid = false;
+      showError('product-image', 'Product image is required.');
+    }
+
+    // Validate variants
+    const variantRows = document.querySelectorAll('.variant-fields');
+    variantRows.forEach(row => {
+      const color = row.querySelector('[id$="variant-color"]').value.trim();
+      const size = row.querySelector('[id$="variant-size"]').value.trim();
+      const quantity = row.querySelector('[id$="variant-quantity"]').value.trim();
+
+      if (!color) {
+        valid = false;
+        showError(row.querySelector('[id$="variant-color"]'), 'Color is required.');
+      }
+
+      if (!size) {
+        valid = false;
+        showError(row.querySelector('[id$="variant-size"]'), 'Size is required.');
+      }
+
+      if (!quantity || parseInt(quantity) <= 0) {
+        valid = false;
+        showError(row.querySelector('[id$="variant-quantity"]'), 'Quantity must be greater than 0.');
+      }
+      });
+  
+      if (!valid) {
+        event.preventDefault(); // Prevent form submission if validation fails
+      }
+    });
+  
+    // Add Variant
+    const addVariantButton = document.getElementById('add-variant');
+    addVariantButton.addEventListener('click', () => {
+      const template = document.getElementById('variant-template').innerHTML;
+      document.querySelector('#variants-table tbody').insertAdjacentHTML('beforeend', template);
+    });
+  
+    // Remove Variant
+    document.getElementById('variants-table').addEventListener('click', (event) => {
+      if (event.target.classList.contains('remove-variant')) {
+        event.target.closest('.variant-fields').remove();
+      }
+    });
+  
+    // Function to show error messages
+    function showError(inputId, message) {
+      const input = typeof inputId === 'string' ? document.getElementById(inputId) : inputId;
+      input.classList.add('is-invalid');
+      const error = document.createElement('div');
+      error.className = 'error-message';
+      error.innerText = message;
+      input.parentElement.appendChild(error);
+    }
+  });
+  </script>

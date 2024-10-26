@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .btn-custom {
+            background-color: #b71c1c;
+            color: #fff;
+            width: 100%;
+        }
+
+        .btn-custom:hover {
+            background-color: #f5f5f5;
+            color: #b71c1c;
+        }
+
+        .card {
+            background-color: #333;
+            border: none;
+            text-align: center;
+            height: 100%;
+        }
+
+        .section-title {
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #b71c1c;
+            padding-bottom: 5px;
+            color: #f5f5f5;
+        }
+
+        .view-more-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #b71c1c;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 10px;
+            margin-right: 10px;
+            text-decoration: none;
+        }
+
+        .view-more-btn:hover {
+            background-color: #f5f5f5;
+            color: #b71c1c;
+            text-decoration: none;
+        }
+
+        .card-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+
+        /* Adjusting the slideshow */
+        .slideshow-container {
+            position: relative;
+            max-width: 100%;
+            margin: auto;
+        }
+
+        .slides {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 450px;
+        }
+
+        .slides img {
+            width: 30%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .middle-image img {
+            width: 40%;
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slideshow Section -->
+    <div class="slideshow-container my-5">
+        <!-- Slide 1 -->
+        <div class="slides" style="display: flex;">
+            <div class="row">
+                <div class="col">
+                    <img src="https://via.placeholder.com/300x300?text=Product+1" alt="Product 1 Left">
+                </div>
+                <div class="col middle-image">
+                    <img src="https://via.placeholder.com/800x400?text=Product+1" alt="Product 1 Center">
+                </div>
+                <div class="col">
+                    <img src="https://via.placeholder.com/300x300?text=Product+1" alt="Product 1 Right">
+                </div>
+            </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="slides" style="display: none;">
+            <div class="row">
+                <div class="col">
+                    <img src="https://via.placeholder.com/300x300?text=Product+2" alt="Product 2 Left">
+                </div>
+                <div class="col middle-image">
+                    <img src="https://via.placeholder.com/800x400?text=Product+2" alt="Product 2 Center">
+                </div>
+                <div class="col">
+                    <img src="https://via.placeholder.com/300x300?text=Product+2" alt="Product 2 Right">
+                </div>
+            </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="slides" style="display: none;">
+            <div class="row">
+                <div class="col">
+                    <img src="https://via.placeholder.com/300x300?text=Product+3" alt="Product 3 Left">
+                </div>
+                <div class="col middle-image">
+                    <img src="https://via.placeholder.com/800x400?text=Product+3" alt="Product 3 Center">
+                </div>
+                <div class="col">
+                    <img src="https://via.placeholder.com/300x300?text=Product+3" alt="Product 3 Right">
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+        <a class="next" onclick="changeSlide(1)">&#10095;</a>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container my-5">
+        <!-- On Sale Section -->
+        <section aria-labelledby="on-sale" class="position-relative">
+            <div class="section-title text-center" id="on-sale">
+                <h2>On Sale</h2>
+                <a href="#" class="view-more-btn" aria-label="View more On Sale">View More</a>
+            </div>
+            <div class="row mb-4">
+                <% @on_sale_products.first(4).each do |product| %>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <div class="card" aria-labelledby="on-sale-item-<%= product.id %>" style="border-color: red; background-color: black;">
+                            <%= link_to product_path(product) do %>
+                                <% if product.image.attached? %>
+                                    <%= image_tag product.image, class: 'card-img-top img-fluid', alt: product.name, style: "height: 200px; object-fit: cover;" %>
+                                <% else %>
+                                    <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                                <% end %>
+                            <% end %>
+                            <div class="card-body text-white d-flex flex-column justify-content-between">
+                                <h5 class="card-title" style="color: red;"><%= product.name %></h5>
+                                <p class="card-text">Price: <%= number_to_currency(product.price) %></p>
+                                <p class="card-text"><%= product.description %></p>
+                                <div class="mt-auto">
+                                    <a href="<%= product_path(product) %>" class="btn btn-custom" aria-label="View On Sale Item <%= product.id %>">View Product</a>
+                                    <a href="#" class="btn btn-custom" aria-label="Add On Sale Item <%= product.id %> to cart">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </section>
+
+        <!-- Best Selling Section -->
+        <section aria-labelledby="best-selling" class="position-relative">
+            <div class="section-title text-center" id="best-selling">
+                <h2>Best Selling</h2>
+                <a href="#" class="view-more-btn" aria-label="View more Best Selling">View More</a>
+            </div>
+            <div class="row mb-4">
+                <% @best_selling_products.first(4).each do |product| %>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <div class="card" aria-labelledby="best-selling-item-<%= product.id %>" style="border-color: red; background-color: black;">
+                            <%= link_to product_path(product) do %>
+                                <% if product.image.attached? %>
+                                    <%= image_tag product.image, class: 'card-img-top img-fluid', alt: product.name, style: "height: 200px; object-fit: cover;" %>
+                                <% else %>
+                                    <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                                <% end %>
+                            <% end %>
+                            <div class="card-body text-white d-flex flex-column justify-content-between">
+                                <h5 class="card-title" style="color: red;"><%= product.name %></h5>
+                                <p class="card-text">Price: <%= number_to_currency(product.price) %></p>
+                                <p class="card-text"><%= product.description %></p>
+                                <div class="mt-auto">
+                                    <a href="#" class="btn btn-custom" aria-label="Add Best Selling Item <%= product.id %> to cart">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </section>
+
+        <!-- New Arrivals Section -->
+        <section aria-labelledby="new-arrivals" class="position-relative">
+            <div class="section-title text-center" id="new-arrivals">
+                <h2>New Arrivals</h2>
+                <a href="#" class="view-more-btn" aria-label="View more New Arrivals">View More</a>
+            </div>
+            <div class="row mb-4">
+                <% @new_arrivals.first(4).each do |product| %>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <div class="card" aria-labelledby="new-arrival-item-<%= product.id %>" style="border-color: red; background-color: black;">
+                            <%= link_to product_path(product) do %>
+                                <% if product.image.attached? %>
+                                    <%= image_tag product.image, class: 'card-img-top img-fluid', alt: product.name, style: "height: 200px; object-fit: cover;" %>
+                                <% else %>
+                                    <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                                <% end %>
+                            <% end %>
+                            <div class="card-body text-white d-flex flex-column justify-content-between">
+                                <h5 class="card-title" style="color: red;"><%= product.name %></h5>
+                                <p class="card-text">Price: <%= number_to_currency(product.price) %></p>
+                                <p class="card-text"><%= product.description %></p>
+                                <div class="mt-auto">
+                                    <a href="#" class="btn btn-custom" aria-label="Add New Arrival Item <%= product.id %> to cart">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </section>
+
+        <!-- Women's Wear Section -->
+        <section aria-labelledby="womens-wear" class="position-relative">
+            <div class="section-title text-center" id="womens-wear">
+                <h2>Women's Wear</h2>
+                <a href="#" class="view-more-btn" aria-label="View more Women's Wear">View More</a>
+            </div>
+            <div class="row mb-4">
+                <% @womens_wear.first(4).each do |product| %>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <div class="card" aria-labelledby="womens-wear-item-<%= product.id %>" style="border-color: red; background-color: black;">
+                            <%= link_to product_path(product) do %>
+                                <% if product.image.attached? %>
+                                    <%= image_tag product.image, class: 'card-img-top img-fluid', alt: product.name, style: "height: 200px; object-fit: cover;" %>
+                                <% else %>
+                                    <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                                <% end %>
+                            <% end %>
+                            <div class="card-body text-white d-flex flex-column justify-content-between">
+                                <h5 class="card-title" style="color: red;"><%= product.name %></h5>
+                                <p class="card-text">Price: <%= number_to_currency(product.price) %></p>
+                                <p class="card-text"><%= product.description %></p>
+                                <div class="mt-auto">
+                                    <a href="#" class="btn btn-custom" aria-label="Add Women's Wear Item <%= product.id %> to cart">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </section>
+
+        <!-- Men's Wear Section -->
+        <section aria-labelledby="mens-wear" class="position-relative">
+            <div class="section-title text-center" id="mens-wear">
+                <h2>Men's Wear</h2>
+                <a href="#" class="view-more-btn" aria-label="View more Men's Wear">View More</a>
+            </div>
+            <div class="row mb-4">
+                <% @mens_wear.first(4).each do |product| %>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <div class="card" aria-labelledby="mens-wear-item-<%= product.id %>" style="border-color: red; background-color: black;">
+                            <%= link_to product_path(product) do %>
+                                <% if product.image.attached? %>
+                                    <%= image_tag product.image, class: 'card-img-top img-fluid', alt: product.name, style: "height: 200px; object-fit: cover;" %>
+                                <% else %>
+                                    <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                                <% end %>
+                            <% end %>
+                            <div class="card-body text-white d-flex flex-column justify-content-between">
+                                <h5 class="card-title" style="color: red;"><%= product.name %></h5>
+                                <p class="card-text">Price: <%= number_to_currency(product.price) %></p>
+                                <p class="card-text"><%= product.description %></p>
+                                <div class="mt-auto">
+                                    <a href="#" class="btn btn-custom" aria-label="Add Men's Wear Item <%= product.id %> to cart">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </section>
+
+        <!-- All Products Section -->
+        <section aria-labelledby="all-products" class="position-relative">
+            <div class="section-title text-center" id="all-products">
+                <h2>All Products</h2>
+                <a href="#" class="view-more-btn" aria-label="View more All Products">View More</a>
+            </div>
+            <div class="row mb-4">
+                <% @all_products.first(4).each do |product| %>
+                    <div class="col-sm-6 col-md-3 mb-3">
+                        <div class="card" aria-labelledby="all-products-item-<%= product.id %>" style="border-color: red; background-color: black;">
+                            <%= link_to product_path(product) do %>
+                                <% if product.image.attached? %>
+                                    <%= image_tag product.image, class: 'card-img-top img-fluid', alt: product.name, style: "height: 200px; object-fit: cover;" %>
+                                <% else %>
+                                    <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                                <% end %>
+                            <% end %>
+                            <div class="card-body text-white d-flex flex-column justify-content-between">
+                                <h5 class="card-title" style="color: red;"><%= product.name %></h5>
+                                <p class="card-text">Price: <%= number_to_currency(product.price) %></p>
+                                <p class="card-text"><%= product.description %></p>
+                                <div class="mt-auto">
+                                    <a href="#" class="btn btn-custom" aria-label="Add All Products Item <%= product.id %> to cart">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let slides = document.getElementsByClassName("slides");
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}    
+            slides[slideIndex - 1].style.display = "flex";  
+            setTimeout(showSlides, 3000); // Change image every 3 seconds
+        }
+
+        function changeSlide(n) {
+            let slides = document.getElementsByClassName("slides");
+            slideIndex += n;
+            if (slideIndex > slides.length) {slideIndex = 1}
+            if (slideIndex < 1) {slideIndex = slides.length}
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slides[slideIndex - 1].style.display = "flex";  
+        }
+    </script>
+</body>
+</html>

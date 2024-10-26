@@ -1,0 +1,88 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark" aria-label="Main navigation" style="background-color: #ff0000;">
+        <div class="container-fluid">
+            <!-- Left-side Navbar Links -->
+            <ul class="navbar-nav navbar-nav-left" aria-label="Primary">
+                <li class="nav-item">
+                    <%= link_to 'Home', root_path, class: 'nav-link text-white', aria: { label: 'Home' } %>
+                </li>
+                <!-- Mens Wear Dropdown -->
+                <li class="nav-item">
+                    <%= link_to 'Mens Wear', mens_wear_clients_products_path, class: 'nav-link text-white' %>
+                </li>
+                <!-- Womens Wear Dropdown -->
+                <li class="nav-item dropdown">
+                    <%= link_to 'Womens Wear', womens_wear_clients_products_path, class: 'nav-link text-white' %>
+                </li>
+                <li class="nav-item">
+                    <%= link_to 'New Arrivals', '#', class: 'nav-link text-white', aria: { label: 'New Arrivals' } %>
+                </li>
+            </ul>
+
+            <!-- Centered Logo -->
+            <a class="navbar-brand" href="<%= root_path %>" aria-label="Fashion Store Logo">
+                <%= image_tag('logo.png', alt: 'Brand Logo', class: 'd-inline-block align-top', style: 'height: 30px;') %>
+            </a>
+
+            <!-- Right-side Navbar Links -->
+            <ul class="navbar-nav navbar-nav-right d-flex align-items-center" aria-label="Secondary">
+                <!-- Search Form -->
+                <li class="nav-item">
+                    <form class="d-flex me-3" role="search" aria-label="Search Form" method="get" action="<%= products_path %>">
+                        <div class="input-group">
+                            <input id="search" name="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+                            <span class="input-group-text bg-white">
+                                <!-- Search Icon with cursor pointer to submit form -->
+                                <i class="bi bi-search" style="cursor: pointer;" onclick="this.closest('form').submit();"></i>
+                            </span>
+                        </div>
+                    </form>
+                </li>
+
+                <!-- Shopping Cart -->
+                <li class="nav-item">
+                    <%= link_to clients_cart_path, class: 'nav-link text-white', aria: { label: 'Shopping Cart' } do %>
+                        <i class="bi bi-cart"></i> Cart
+                    <% end %>
+                </li>
+
+                <!-- User Profile -->
+                <li class="nav-item">
+                    <%= link_to clients_users_path, class: 'nav-link text-white', aria: { label: 'User Profile' } do %>
+                        <i class="bi bi-person"></i> Profile
+                    <% end %>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- Custom CSS for dropdowns only with black, white, and red theme -->
+<style>
+  /* Remove dropdown arrow */
+  .nav-item .nav-link {
+      padding-right: 0.5rem;
+  }
+
+  /* Show dropdown menu on hover */
+  .nav-item.dropdown:hover .dropdown-menu {
+      display: block;
+  }
+
+  /* Dropdown menu styling */
+  .dropdown-menu {
+      background-color: black; /* Black background for dropdown */
+      border: 1px solid #ff0000; /* Red border for dropdown */
+  }
+
+  /* Dropdown item styling */
+  .dropdown-item {
+      color: white; /* White text for dropdown items */
+  }
+
+  /* Dropdown item hover effect */
+  .dropdown-item:hover {
+      background-color: #ff0000; /* Red background on hover */
+      color: white; /* White text on hover */
+  }
+</style>

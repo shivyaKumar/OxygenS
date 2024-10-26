@@ -1,0 +1,2 @@
+module Clients::WishlistsHelper
+end

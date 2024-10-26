@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mens Wear</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #f5f5f5;
+      background-color: #1a1a1a;
+    }
+
+    .navbar, .footer {
+      background-color: #b71c1c;
+    }
+
+    .btn-custom {
+      background-color: #b71c1c;
+      color: #fff;
+      width: 100%;
+      margin-bottom: 10px; /* Space between buttons */
+    }
+
+    .btn-custom:hover {
+      background-color: #f5f5f5;
+      color: #b71c1c;
+    }
+
+    .card {
+      background-color: #333;
+      border: none;
+      text-align: center;
+    }
+
+    .footer-link {
+      color: #f5f5f5;
+      text-decoration: none;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+
+    .section-title {
+      text-transform: uppercase;
+      margin: 1rem 0;
+      border-bottom: 2px solid #b71c1c;
+      padding-bottom: 5px;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .circular-filter-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      margin: 20px 0;
+    }
+
+    .circular-filter {
+      background-color: #d3d3d3;
+      border-radius: 50%;
+      text-align: center;
+      width: 130px;
+      height: 130px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .circular-filter img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .circular-filter:hover {
+      transform: scale(1.1);
+    }
+
+    .circular-filter.selected {
+      border: 3px solid red; /* Red border to highlight selected filter */
+    }
+
+    .circular-filter-container p {
+      color: red !important;
+      font-weight: bold;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .circular-filter-container a {
+      color: red !important;
+      text-decoration: none;
+    }
+
+    .circular-filter-container a:hover {
+      color: white !important;
+      text-decoration: underline !important;
+      text-decoration-color: red !important;
+    }
+
+    .divider {
+      border-bottom: 2px solid #b71c1c;
+      margin: 1rem 0;
+    }
+
+    .row.flex-row {
+      display: flex;
+    }
+
+    .col-md-3, .col-md-9 {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .col-md-3 {
+      background-color: #343a40;
+      padding: 15px;
+      height: 100%;
+    }
+
+    .filter-menu {
+      border: 2px solid red; /* Red border around the filter */
+      padding: 15px;
+      background-color: #343a40; /* Background color of filter section */
+      height: 100%;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    #price-range {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slider {
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .circular-filter-container {
+      text-align: center;
+    }
+
+    .circular-filter {
+      margin: 0 auto;
+    }
+
+    /* Updated styles to make all text uniform */
+    h5 {
+      font-size: 1rem; /* Same size for all headings */
+      font-weight: normal; /* Same weight as other text */
+      color: #f5f5f5; /* Match other text color */
+      margin-bottom: 10px;
+    }
+
+    .filter-title {
+      font-weight: bold;
+      font-size: 1.4rem; 
+      color: #b71c1c; /* Red for the title */
+      margin-bottom: 10px;
+    }
+
+    /* Updated styles for two-column filter arrangement */
+    .filter-options .row .col-md-6 {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <section aria-labelledby="mens-wear" class="position-relative">
+    <div class="section-title" id="mens-wear">
+      <h2>Mens Wear</h2>
+    </div>
+
+    <!-- Circular Category Filters -->
+    <div class="circular-filter-container">
+      <div class="col-md-2 text-center">
+        <%= link_to mens_wear_clients_products_path(category: 'Vest') do %>
+          <div class="circular-filter">
+            <%= image_tag "vest.png", alt: "Vest", class: "circular-img" %>
+          </div>
+          <p>Vest</p>
+        <% end %>
+      </div>
+      <div class="col-md-2 text-center">
+        <%= link_to mens_wear_clients_products_path(category: 'Sports') do %>
+          <div class="circular-filter">
+            <%= image_tag "sports.png", alt: "Sports", class: "circular-img" %>
+          </div>
+          <p>Sports</p>
+        <% end %>
+      </div>
+      <div class="col-md-2 text-center">
+        <%= link_to mens_wear_clients_products_path(category: 'Suit') do %>
+          <div class="circular-filter">
+            <%= image_tag "suit.png", alt: "Suit", class: "circular-img" %>
+          </div>
+          <p>Suit</p>
+        <% end %>
+      </div>
+      <div class="col-md-2 text-center">
+        <%= link_to mens_wear_clients_products_path(category: 'Belt') do %>
+          <div class="circular-filter">
+            <%= image_tag "belt.png", alt: "Belt", class: "circular-img" %>
+          </div>
+          <p>Belt</p>
+        <% end %>
+      </div>
+      <div class="col-md-2 text-center">
+        <%= link_to mens_wear_clients_products_path(category: 'Shirt') do %>
+          <div class="circular-filter">
+            <%= image_tag "shirt.png", alt: "Shirt", class: "circular-img" %>
+          </div>
+          <p>Shirt</p>
+        <% end %>
+      </div>
+      <div class="col-md-2 text-center">
+      <%= link_to mens_wear_clients_products_path(category: ['T-Shirt']) do %>
+        <div class="circular-filter">
+          <%= image_tag "tshirt.png", alt: "T-Shirt", class: "circular-img" %>
+        </div>
+        <p>T-Shirt</p>
+      <% end %>      
+      </div>
+    </div>
+
+    <script>
+      // Add a click event listener to each circular filter
+      document.querySelectorAll('.circular-filter').forEach(function(filter) {
+        filter.addEventListener('click', function() {
+          // Remove the 'selected' class from all filters
+          document.querySelectorAll('.circular-filter').forEach(function(f) {
+            f.classList.remove('selected');
+          });
+      
+          // Add the 'selected' class to the clicked filter
+          this.classList.add('selected');
+        });
+      });
+    </script>
+
+    <div class="divider"></div>
+
+    <div class="container mt-4">
+      <div class="row flex-row">
+        <div class="col-md-3">
+          <!-- Filter Menu -->
+          <div class="filter-menu" id="filter-menu">
+            <!-- Filter Title -->
+            <div class="filter-title">Filter</div>
+            <div class="divider"></div> <!-- Divider under Filter title -->
+
+            <%= form_with url: mens_wear_clients_products_path, method: :get, local: true, id: 'filter-form' do |form| %>
+              <div class="form-group">
+                <h5>CATEGORY</h5>
+                <div class="filter-options">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <%= form.check_box :category, { multiple: true, checked: params[:category]&.include?('Shirt') }, 'Shirt', nil %> Shirt
+                    </div>
+                    <div class="col-md-6">
+                      <%= form.check_box :category, { multiple: true, checked: params[:category]&.include?('T-Shirt') }, 'T-Shirt', nil %> T-Shirt
+                    </div>
+                    <div class="col-md-6">
+                      <%= form.check_box :category, { multiple: true, checked: params[:category]&.include?('Sports') }, 'Sports', nil %> Sports
+                    </div>
+                    <div class="col-md-6">
+                      <%= form.check_box :category, { multiple: true, checked: params[:category]&.include?('Vest') }, 'Vest', nil %> Vest
+                    </div>
+                    <div class="col-md-6">
+                      <%= form.check_box :category, { multiple: true, checked: params[:category]&.include?('Belt') }, 'Belt', nil %> Belt
+                    </div>
+                    <div class="col-md-6">
+                      <%= form.check_box :category, { multiple: true, checked: params[:category]&.include?('Suit') }, 'Suit', nil %> Suit
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="form-group">
+                <h5>COLOR</h5>
+                <% @colors.each do |color| %>
+                  <%= form.check_box :color, { multiple: true, checked: params[:color]&.include?(color) }, color, nil %> <%= color %><br>
+                <% end %>
+              </div>
+              <div class="divider"></div>
+              <div class="form-group">
+                <h5>SIZE</h5>
+                <div class="filter-options">
+                  <div class="row">
+                    <% @sizes.each do |size| %>
+                      <div class="col-md-6">
+                        <%= form.check_box :size, { multiple: true, checked: params[:size]&.include?(size) }, size, nil %> <%= size %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="form-group">
+                <h5>PRICE RANGE</h5>
+                <div id="price-range">
+                  <span class="price-label">$0</span>
+                  <input type="range" id="price-slider" name="price_max" min="0" max="300" step="1" value="<%= params[:price_max] || 150 %>" class="slider">
+                  <span class="price-label">$300</span>
+                </div>
+                <div class="price-display">
+                  Selected: $<span id="slider-value"><%= params[:price_max] || 150 %></span>
+                </div>
+              </div>
+              <%= form.submit 'Apply Filters', class: 'btn btn-custom' %>
+              <button type="button" class="btn btn-custom" id="clear-filter-btn">Clear All Filters</button>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="row">
+            <% if @products.present? %>
+              <% @products.each do |product| %>
+                <div class="col-md-4 mb-4">
+                  <div class="card">
+                    <%= image_tag product.image, class: 'card-img-top' if product.image.attached? %>
+                    <div class="card-body">
+                      <h5 class="card-title"><%= product.name %></h5>
+                      <p class="card-text">Price: $<%= product.price %></p>
+                      <p class="card-text">Color: <%= product.variants.first.color if product.variants.present? %></p>
+                      <p class="card-text">Size: <%= product.variants.first.size if product.variants.present? %></p>
+                      <%= link_to 'View Details', product_path(product), class: 'btn btn-primary' %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="col-12">
+                <p class="alert alert-warning">No products found for the selected filter.</p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    var slider = document.getElementById("price-slider");
+    var sliderValue = document.getElementById("slider-value");
+
+    slider.oninput = function() {
+      sliderValue.innerHTML = this.value;
+    }
+
+    document.getElementById("clear-filter-btn").onclick = function() {
+      document.getElementById('filter-form').reset();
+      sliderValue.innerHTML = "150";
+      window.location.href = "<%= mens_wear_clients_products_path %>";
+    };
+  </script>
+</body>
+</html>
